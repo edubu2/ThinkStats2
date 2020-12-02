@@ -74,3 +74,5 @@ book/thinkstats2.image.out
 book/thinkstats2.image.tex
 book/thinkstats2.tex
 book/*.log
+solutions/
+.vscode/
