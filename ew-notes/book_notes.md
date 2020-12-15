@@ -8,7 +8,7 @@
 * in python:
   ``cov = np.dot(xs-meanx, ys-meany) / len(xs)``
 
-## Pearson's Correlation
+## Pearson's Correlation (ρ)
 
 * a value in the range(-1:1) that determines strength of the correlation between *X* and *Y*
 * it is the variance of *X* and *Y* over the standard deviation of *X* and *Y*
@@ -42,7 +42,7 @@ def SpearmanCorr(xs, ys):
 
 ## Standard Error / RMSE
 
-* also known as **RMSE** or Root Mean Squared Error
+* also known as **RMSE** or Root Mean Squared Error, used to measure 'Goodness of Fit'
 * in python:
     ```
     def RMSE(estimates, actual):
@@ -51,6 +51,54 @@ def SpearmanCorr(xs, ys):
         return math.sqrt(mse)
     ```
 
+* RMSE is equal to the standard deviation of the residuals 
+
+## Power
+
+* the "correct positive rate" is called the **power** of the test, or sometimes, **sensitivity**
+* To get the power, first need to find the **false negative rate**\*:
+  * \* if the effect is real, the chance that the hypothesis test will fail
+  * more difficult to find because it depends on the actual effect size, and we normally don't know that
+  * we can compute this rate using a hypothetical effect size
+    * if the observed difference between groups (for example, difference in birth weight for firsts vs. others) is accurate, we can use the observed samples as a model of the population and run hypothesis tests with simulated data
+  * formula for false neg rate:
+    ```
+    def FalseNegRate(data, num_runs=100):
+        group1, group2 = data
+        count = 0
+        for i in range(num_runs):
+            sample1 = thinkstats2.Resample(group1)
+            sample2 = thinkstats2.Resample(group2)
+
+            ht = DiffMeansPermute((sample1, sample2))
+            pvalue = ht.PValue(iters=101)
+
+            if pvalue > 0.05:
+                count += 1
+
+        return count / num_runs
+    ```
+    * takes data in the form of a tuple(example: ``firsts.prglngth, others.prglngth``)
+    * each time thru the loop, it draws a random sample & runs the hypothesis test. Then it checks result & counts for false negatives
+* now, we can get the **power**, or **correct positive rate** by subtracting the false neg rate by one 
+  * ``power = 1 - false_neg_rate``
+
+## Resampling
+
+* takes a sequence and draws a sample with the same length, with replacement
+* two ways:
+  1. give each row the same probability of being resampled
+  * formula:
+    ```
+    def Resample(xs):
+        return np.random.choice(xs, len(xs), replace=True)
+    ```
+  2. give certain rows different weights than others
+       * offsets **oversampling**
+          * oversampling example: NSFG data is not a representative sample. The survey deliberately over-samples several groups in order to improve the chance of getting stastically significant results
+          * in other words, to improve the **power** of tests involving these groups
+
+
 ## Coefficient of Determination ($R^2$)
 
 * measures goodness of fit between two variables, in terms of minimizing [MSE/RMSE](#standard-error--rmse)
@@ -58,9 +106,34 @@ def SpearmanCorr(xs, ys):
     * standard deviation of the residuals is a better indicator (Downey's opinion)
 * denoted $R^2$ and called "R-squared"
 * it is equal to (Pearson's Correlation)$^2$
+* it has its own formula, though:
+    ```
+    def CoefDetermination(ys, res):
+        return 1 - Var(res) / Var(ys)
+    ```
 * example:
   * for birth weight and mother's age, $R^2$ is 0.0047, which means that mother's age predicts about half of 1% of variance in birth weight.
 
+## Measuring Goodness of Fit (Methods):
+
+1. Best method: standard deviation of the residuals, especially in comparison to ``stdev(ys)``
+   * same as RMSE
+2. $R^2$ 
+   * equals (Pearson's correlation)$^2$
+
+## Testing Linear Models (Methods):
+
+* test whether an apparent reduction in MSE is due to chance
+    *  simulate the Null Hypothesis by permutation
+    *  find RMSE of null hypothesis vs sample
+* test whether an apparent slope is due to chance
+     *  null hypothesis: the slope is equal to zero.
+     *  compute the probability that the slope in the sampling distribution falls below 0. 
+        * if the estimated slope were negative, we would compute the probability that the slope in the sampling distribution exceeds 0
+        * should be easy because because we normally want to compute the sampling distribution of the parameters anyway. 
+        * and it is a good approximation unless the sample size is small and the distribution of residuals is skewed. 
+          * even then, it is usually good enough, because p-values don't have to be precise.
+  
 
 
 
