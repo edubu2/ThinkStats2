@@ -134,8 +134,58 @@ def SpearmanCorr(xs, ys):
         * and it is a good approximation unless the sample size is small and the distribution of residuals is skewed. 
           * even then, it is usually good enough, because p-values don't have to be precise.
   
+## Regression
 
+* the goal of regression analysis is to describe the relationship between one set of **dependent variables**, and another set of variables called **independent**, or **explanatory** variables
+  * dependent variables are typically plotted on the ``y-axis``
+  * **ex**planatory on the ***ex**-axis* ;)
+* types of regression:
+  * **simple regression**: 1 dependent, 1 explanatory variable
+  * **multiple regression**: 1 dependent, multiple explanatory variables
+  * **multivariate regression**: multiple dependent & explanatory variables
 
+### Linear Regression
+
+* when the relationship between the dependent and explanatory variables is linear
+* formula:
+$$y = β_0 + β_1 x_1 + β_2 x_2 + ε$$
+* where:
+  * $β_0$ is the ``intercept``,
+  * $β_1$ is the parameter associated with $x_1$,
+  * $β_2$ is the parameter associated with $x_2$, and
+  * $ε$ is the residual due to random variation or other unknown factors
+* given values for $y$ and sequences for $x_1$ and $x_2$, we can find parameters $β_0$, $β_1$, and $β_2$ that **minimize the sum of $ε^2$**
+  * this process is known as [**ordinary least squares**](#ordinary-Least-Squares-(#ordinary-least-squares-ols))
+
+#### Ordinary Least Squares (OLS)
+* given values for $y$ and sequences for $x_1$ and $x_2$, we can find parameters $β_0$, $β_1$, and $β_2$ that **minimize the sum of $ε^2$** using **Ordinary Least Squares**
+* We will use python's ``StatsModels`` (conda built-in) library.
+* example:
+    ```
+    import statsmodels.formula.api as smf
+    
+    live, firsts, others = first.MakeFrames()
+    formula = 'totalwgt_lb ~ agepreg'
+    model = smf.ols(formula, data=live)
+    results = model.fit()
+    ```
+* **statsmodels** provides two interfaces (APIs):
+  * the "formula" API uses strings to identify the dependent and explanatory variables. It uses a syntax called patsy; in this example, the ``~`` operator separates the dependent variable on the left from the explanatory variables on the right.
+
+* ``smf.ols`` takes the formula string and the DataFrame, live, and returns an OLS ('ordinary least squares') object that represents the model.
+
+* the **fit** method fits the model to the data and returns a ``RegressionResults`` object that contains the results.
+
+* the results are also available as attributes. params is a Series that maps from variable names to their parameters, so we can get the intercept and slope like this:
+    ```
+    inter = results.params['Intercept']
+    slope = results.params['agepreg']
+    ```
+
+* ``pvalues`` is a Series that maps from variable names to the associated p-values, so we can check whether the estimated slope is statistically significant
+    ```
+    results.pvalues['agepreg']
+    ```
 
 
 
