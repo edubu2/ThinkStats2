@@ -160,7 +160,7 @@ $$y = β_0 + β_1 x_1 + β_2 x_2 + ε$$
 #### Ordinary Least Squares (OLS)
 * given values for $y$ and sequences for $x_1$ and $x_2$, we can find parameters $β_0$, $β_1$, and $β_2$ that **minimize the sum of $ε^2$** using **Ordinary Least Squares**
 * We will use python's ``StatsModels`` (conda built-in) library.
-* example:
+* example (notes below codeblock):
     ```
     import statsmodels.formula.api as smf
     
@@ -169,13 +169,13 @@ $$y = β_0 + β_1 x_1 + β_2 x_2 + ε$$
     model = smf.ols(formula, data=live)
     results = model.fit()
     ```
-* **statsmodels** provides two interfaces (APIs):
   * the "formula" API uses strings to identify the dependent and explanatory variables. It uses a syntax called patsy; in this example, the ``~`` operator separates the dependent variable on the left from the explanatory variables on the right.
 
-* ``smf.ols`` takes the formula string and the DataFrame, live, and returns an OLS ('ordinary least squares') object that represents the model.
+  * ``smf.ols`` takes the formula string and the DataFrame, live, and returns an OLS ('ordinary least squares') object that represents the model.
 
-* the **fit** method fits the model to the data and returns a ``RegressionResults`` object that contains the results.
+  * the **fit** method fits the model to the data and returns a ``RegressionResults`` object that contains the results.
 
+* we can then run ``results.summary()``, which prints a summary of the test results
 * the results are also available as attributes. params is a Series that maps from variable names to their parameters, so we can get the intercept and slope like this:
     ```
     inter = results.params['Intercept']
