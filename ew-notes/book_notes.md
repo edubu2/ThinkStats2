@@ -51,7 +51,7 @@ def SpearmanCorr(xs, ys):
         return math.sqrt(mse)
     ```
 
-* RMSE is equal to the standard deviation of the residuals 
+* RMSE is equal to the standard deviation of the y values if there are no independent/explanatory variables to base your guesses off of 
 
 ## Power
 
@@ -117,7 +117,7 @@ def SpearmanCorr(xs, ys):
 ## Measuring Goodness of Fit (Methods):
 
 1. Best method: standard deviation of the residuals, especially in comparison to ``stdev(ys)``
-   * same as RMSE
+   * ``stdev(ys)`` is the same as RMSE if you have to guess $y$s without having explanatory/independent variables to use
 2. $R^2$ 
    * equals (Pearson's correlation)$^2$
 
