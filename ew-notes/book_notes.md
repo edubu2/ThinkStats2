@@ -175,7 +175,10 @@ $$y = β_0 + β_1 x_1 + β_2 x_2 + ε$$
 
   * the **fit** method fits the model to the data and returns a ``RegressionResults`` object that contains the results.
 
-* we can then run ``results.summary()``, which prints a summary of the test results
+* we can then run ``results.summary()``, which prints a summary of the test results, like so:
+
+![OLS Results Summary](https://github.com/edubu2/ThinkStats2/blob/master/ew-notes/book_notes-snips/11-OLSresultsSummary.jpg)
+
 * the results are also available as attributes. params is a Series that maps from variable names to their parameters, so we can get the intercept and slope like this:
     ```
     inter = results.params['Intercept']
