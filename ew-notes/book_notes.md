@@ -118,8 +118,7 @@ def SpearmanCorr(xs, ys):
 
 1. Best method: standard deviation of the residuals, especially in comparison to ``stdev(ys)``
    * ``stdev(ys)`` is the same as RMSE if you have to guess $y$s without having explanatory/independent variables to use
-2. $R^2$ 
-   * equals (Pearson's correlation)$^2$
+2. [**$R^2$**](#coefficient-of-determination-r2)
 
 ## Testing Linear Models (Methods):
 
