@@ -196,10 +196,30 @@ $$y = β_0 + β_1 x_1 + β_2 x_2 + ε$$
   * solves this issue (example):
     * if gender is dependent variable (predicting gender of baby), getting a result of -1.1 or 0.6 does not really help us
     * Logistic Regression solves this by converting the result from probabilities to **odds**
-  * formula:
-$$log_o = β_0 + β_1x_1 + β_2x_2 + ε$$
 * **Poisson Regression**
   * when the dependent variable is an **integer count**
+
+#### Logistic Regression
+* when the dependent variable we're trying to predict is boolean
+* formula:
+$$log_o = β_0 + β_1x_1 + β_2x_2 + ε$$
+* logistic regression (or logit regression) is estimating the parameters of a logistic model (a form of binary regression). 
+* the function that converts log-odds to probability is the logistic function (**logit**), hence the name. The unit of measurement for the log-odds scale is called a **logit**, from logistic unit, 
+* Use *StatsModels* API for logit models, as such
+  * This example would be used to try to predict baby's gender using mother's age:
+    ```
+    live, firsts, others = first.MakeFrames()
+    live = live[live.prglngth>30]
+    live['boy'] = (live.babysex==1).astype(int)
+
+    model = smf.logit('boy ~ agepreg', data=live)
+    results = model.fit()
+    results.summary()
+    ```
+  * we now have a ``model`` instance containing the ``endog`` and ``exog`` attributes, which are:
+    * ``endog`` (**endogenous variable**): another name for dependent variable
+    * ``exog`` (**exogenous variable**): another name for independent/explanatory variable
+      * use ``model.exog_names`` to get the names of the explanatory variables used to fit the line
   
 
 
