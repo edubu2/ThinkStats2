@@ -189,6 +189,22 @@ $$y = β_0 + β_1 x_1 + β_2 x_2 + ε$$
     results.pvalues['agepreg']
     ```
 
+#### Logistic vs Poisson Regression
+
+* **Logistic Regression**
+  * when the dependent variable is boolean
+  * solves this issue (example):
+    * if gender is dependent variable (predicting gender of baby), getting a result of -1.1 or 0.6 does not really help us
+    * Logistic Regression solves this by converting the result from probabilities to **odds**
+  * formula:
+$$log_o = β_0 + β_1x_1 + β_2x_2 + ε$$
+* **Poisson Regression**
+  * when the dependent variable is an **integer count**
+  
+
+
+
+
 
 
 
