@@ -221,7 +221,25 @@ $$log_o = β_0 + β_1x_1 + β_2x_2 + ε$$
     * ``exog`` (**exogenous variable**): another name for independent/explanatory variable
       * use ``model.exog_names`` to get the names of the explanatory variables used to fit the line
   
+### Serial Correlation / Autocorrelation
 
+* as cannabis prices vary from day to day, we may see patterns. If the price is high on Monday, we might expect it to be high for the next couple of days (& vice-versa)
+  * a pattern like this is called **serial correlation**, because each value is correlated with the next one in the series
+* so, ``serial correlation is the correlation between a time series and a shifted or lagged version of itself``
+
+* the **autocorrelation function** maps from lag to the serial correlation with the given lag
+  * it's another name for serial correlation, used more often when the lag is not 1
+  * use this function when you don't know which lags to test...you'll test them all!
+    * use ``statsmodels.tsa.stattools`` to get an instance of the ``acf``, as such:
+    ```
+    import statsmodels.tsa.stattools as smtsa
+    acf = smtsa.acf(filled.resid, nlags=365, unbiased=True)
+    ```
+    * we can then access the correlation of the lags as such:
+    ```
+    >>> acf[0], acf[1], acf[7], acf[30], acf[365]
+    1.000, -0.029, 0.020, 0.014, 0.044
+    ```
 
 
 
